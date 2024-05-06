@@ -2,14 +2,19 @@
 
 :- use_module(TDAstation, [station/5]).
 
-section(POINT1, POINT2, DISTANCE, COST, SECTION):-
+station(1, "jean", "r", 3, st1).
+station(2, "elias", "t", 3, st2).
+station(3, "miaaaau", "c", 3, st3).
+section(st1, st2, 4, 17, s0).
+
+
+section(POINT1, POINT2, DISTANCE, COST, [POINT1, POINT2, DISTANCE, COST]):-
 	station(_, _, _, _, POINT1),
 	station(_, _, _, _, POINT2),
 	integer(DISTANCE),
 	DISTANCE > 0,
 	integer(COST),
-	COST >= 0,
-	SECTION = [POINT1, POINT2, DISTANCE, COST].
+	COST >= 0.
 
 getPoint1(SECTION, P1):-
 	nth0(0, SECTION, P1).

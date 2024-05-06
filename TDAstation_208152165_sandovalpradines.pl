@@ -6,12 +6,9 @@ stationType("m").
 stationType("c").
 stationType("t").
 
-station(ID, NAME, TYPE, STOPTIME, STATION):-
+station(ID, NAME, TYPE, STOPTIME, [ID, NAME, TYPE, STOPTIME]):-
 	integer(ID),
 	string(NAME),
 	stationType(TYPE),
 	integer(STOPTIME),
-	STOPTIME > 0,
-	STATION = [ID, NAME, TYPE, STOPTIME].
-	
-%station(1, "jean", "r", 3, st1).
+	STOPTIME > 0.
