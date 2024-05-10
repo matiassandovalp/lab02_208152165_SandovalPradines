@@ -2,7 +2,7 @@
 
 :- use_module(TDAstation, [station/5]).
 
-station(1, "jean", "r", 3, st1).
+ 
 station(2, "elias", "t", 3, st2).
 station(3, "miaaaau", "c", 3, st3).
 section(st1, st2, 4, 17, s0).

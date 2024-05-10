@@ -1,11 +1,10 @@
 :- use_module(TDAsection, [section/5, getPoint1/2, getPoint2/2, getDistance/2, getCost/2]).
 
-line(ID, NAME, RAIL_TYPE, SECTIONS, LINE):-
+line(ID, NAME, RAIL_TYPE, SECTIONS, [ID, NAME, RAIL_TYPE, SECTIONS]):-
 	integer(ID),
 	string(NAME),
 	string(RAIL_TYPE),
-	is_list(SECTIONS),
-	LINE is [ID, NAME, RAIL_TYPE, SECTIONS].
+	is_list(SECTIONS).
 
 isLine(LINE):-
 	is_list(LINE),
@@ -32,7 +31,9 @@ getSections(LINE, SECTIONS):-
 
 
 %LENGTH, DISTANCE Y COST son variables en todo momento.
+
 lineLength([], 0, 0, 0).
+
 lineLength(LINE, LENGTH, DISTANCE, COST):-
 	nth0(3, LINE, Sections),
 	len(Sections,LENGTH),
@@ -40,17 +41,20 @@ lineLength(LINE, LENGTH, DISTANCE, COST):-
 	cost(Sections, COST).
 
 len([], 0).
+
 len([CAR | CDR], ACUM):-
 	len(CDR, ACUM1),
 	ACUM is ACUM1 + 2.
 
 dist([], 0).
+
 dist([CAR | CDR], ACUM):-
-    dist(CDR, ACUM1),
-    getDistance(CAR, ActualDistance),
-    ACUM is ACUM1 + ActualDistance.
+	dist(CDR, ACUM1),
+	getDistance(CAR, ActualDistance),
+	ACUM is ACUM1 + ActualDistance.
 
 cost([], 0).
+
 cost([CAR | CDR], ACUM):-
 	cost(CDR, ACUM1),
 	getCost(CAR, ActualCost),
@@ -61,10 +65,13 @@ lineSectionLength(LINE, StationName1, StationName2, PATH, DISTANCE, COST):-
 */
 
 lineAddSection(LINE, SECTION, LINEOUT):-
-	getID(LINE, ID),
-	getName(LINE, NAME),
-	getRailType(LINE, RAIL),
-	getSections(LINE, SectionList),
-	append(SectionList, Section, NewSections),%AQUI_REVISAR_COINCIDENCIA_DE_IDS
-	line(ID, NAME, RAIL, NewSections, LINEOUT).
+	section(ID, NAME, RAIL, SECTIONS, LINE),
+	append(SECTION, SECTIONS, NEWSECTIONS),
+	section(ID, NAME, RAIL, NEWSECTIONS, LINEOUT).
+
+idCheck([], Section):-
+	true.
+
+idCheck([CAR|CDR], SECTION):-
+	true.
 	
