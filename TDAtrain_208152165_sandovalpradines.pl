@@ -1,3 +1,6 @@
+:- module('TDAtrain_208152165_sandovalpradines.pl', []).
+:- use_module('TDApcar_208152165_sandovalpradines.pl', [pcar/5]).
+
 
 train(ID, MAKER, RAIL, SPEED, PCARS, [ID, MAKER, RAIL, SPEED, PCARS]):-
 	integer(ID),
@@ -9,17 +12,34 @@ train(ID, MAKER, RAIL, SPEED, PCARS, [ID, MAKER, RAIL, SPEED, PCARS]):-
 	sameModel(PCARS),
 	consistency(PCARS).
 
+getTrainID(TRAIN, ID):-
+	train(ID, _, _, _, _, TRAIN), !.
+	
+getTrainMaker(TRAIN, MAKER):-
+	train(_, MAKER, _, _, _, TRAIN), !.
 
-sameModel([]).
+getTrainRailType(TRAIN, RAIL):-
+	train(_, _, RAIL, _, _, TRAIN), !.
+
+getTrainSpeed(TRAIN, SPEED):-
+	train(_, _, _, SPEED, _, TRAIN), !.
+
+getTrainPcars(TRAIN, PCARLIST):-
+	train(_, _, _, _, PCARLIST, TRAIN), !.
+
+
+sameModel([]):- true, !.
+
 sameModel([CAR|CDR]):-
 	pcar(_, _, MODEL, _, CAR),
 	same(CDR, MODEL).
 
+
 same([], _).
+
 same([CAR|CDR], MODEL):-
 	pcar(_, _, MODEL, _, CAR),
 	sameModel(CDR, MODEL).
-
 
 
 %Extrae elementos de la lista excepto el final
@@ -30,6 +50,7 @@ init([_], []).
 init([X|Xs], [X|Init]) :-
 	init(Xs, Init).
 
+consistency([]):- true, !.
 
 consistency([FIRST_CAR|CARS]):-
 	pcar(_, _, _, "tr", FIRST_CAR),
@@ -59,3 +80,8 @@ addCar([CAR|CDR], NEWPCAR, POS, [CAR|RES]):-
     POS > 0,
     POS1 is POS - 1,
     addCar(CDR, NEWPCAR, POS1, RES).
+	
+/*
+train(1, "TrainCo", "Express", 200, [pcar(1, 50, "ModelA", "tr", P1), pcar(2, 40, "ModelB", "tr", P2)], Train).
+trainAddCar([1, "TrainCo", "Express", 200, [pcar(1, 50, "ModelA", "tr"), pcar(2, 40, "ModelB", "tr")]], pcar(3, 60, "ModelC", "ct"), 2, TrainWithCar).
+*/
