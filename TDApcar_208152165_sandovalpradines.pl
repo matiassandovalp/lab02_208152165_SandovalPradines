@@ -23,3 +23,11 @@ getPcarModel(PCAR, MODEL):-
 	
 getPcarType(PCAR, TYPE):-
 	pcar(_, _, _, TYPE, PCAR).
+
+/*
+pcar(5, 90, "ModelE", "tr", P1),
+getPcarID(P1, ID),
+getPcarCapacity(P1, Capacity),
+getPcarModel(P1, Model),
+getPcarType(P1, Type).
+*/

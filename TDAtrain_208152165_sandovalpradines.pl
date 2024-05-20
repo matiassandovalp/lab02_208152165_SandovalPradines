@@ -10,7 +10,9 @@ train(ID, MAKER, RAIL, SPEED, PCARS, [ID, MAKER, RAIL, SPEED, PCARS]):-
 	SPEED > 0,
 	is_list(PCARS),
 	sameModel(PCARS),
-	consistency(PCARS).
+	writeln("Todos los trenes tienen el mismo modelo"),
+	consistency(PCARS),
+	writeln("Los carros son consistentes en su estructura"), !.
 
 getTrainID(TRAIN, ID):-
 	train(ID, _, _, _, _, TRAIN), !.
@@ -39,7 +41,7 @@ same([], _).
 
 same([CAR|CDR], MODEL):-
 	pcar(_, _, MODEL, _, CAR),
-	sameModel(CDR, MODEL).
+	same(CDR, MODEL).
 
 
 %Extrae elementos de la lista excepto el final
@@ -64,7 +66,7 @@ consistencyMiddle([]).
 
 consistencyMiddle([CAR|REST]):-
 	pcar(_, _, _, "ct", CAR),
-	consistency_middle(REST).
+	consistencyMiddle(REST).
 
 
 trainAddCar(TRAIN, PCAR, POSITION, TRAINOUT):-
@@ -82,6 +84,6 @@ addCar([CAR|CDR], NEWPCAR, POS, [CAR|RES]):-
     addCar(CDR, NEWPCAR, POS1, RES).
 	
 /*
-train(1, "TrainCo", "Express", 200, [pcar(1, 50, "ModelA", "tr", P1), pcar(2, 40, "ModelB", "tr", P2)], Train).
-trainAddCar([1, "TrainCo", "Express", 200, [pcar(1, 50, "ModelA", "tr"), pcar(2, 40, "ModelB", "tr")]], pcar(3, 60, "ModelC", "ct"), 2, TrainWithCar).
-*/
+pcar(5, 90, "ModelE", "tr", P1), pcar(42, 12, "ModelE", "ct", P2), pcar(123, 1233, "ModelE", "ct", P3), pcar(22222, 1324, "ModelE", "ct", P4), pcar(12, 351, "ModelE", "tr", P5).
+pcar(5, 90, "ModelE", "tr", P1), pcar(42, 12, "ModelE", "ct", P2), pcar(123, 1233, "ModelE", "ct", P3), pcar(22222, 1324, "ModelE", "ct", P4), pcar(12, 351, "ModelE", "tr", P5), train(1, "TrainCo", "Express", 200, [P1, P2, P3, P4, P5], Train).
+pcar(5, 90, "ModelE", "tr", P1), pcar(42, 12, "ModelE", "ct", P2), pcar(123, 1233, "ModelE", "ct", P3), pcar(22222, 1324, "ModelE", "ct", P4), pcar(12, 351, "ModelE", "tr", P5), train(1, "TrainCo", "Express", 200, [P1, P2, P3, P4, P5], Train), trainAddCar(Train, P3, 1, TRAINPLUS), getTrainPcars(TRAINPLUS, PCARZZ).*/

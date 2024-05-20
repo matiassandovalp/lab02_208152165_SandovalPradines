@@ -23,12 +23,8 @@ getCost(SECTION, COST):-
     section(_, _, _, COST, SECTION), !.
 
 /*
-station(2, "elias", "t", 3, st2).
-station(3, "miaaaau", "c", 3, st3).
-section(st1, st2, 4, 17, Section1).
-section(st2, st3, 3, 12, Section2).
-getPoint1(section(st1, st2, 4, 17, _), StartPoint).
-getPoint2(section(st1, st2, 4, 17, _), EndPoint).
-getDistance(section(st1, st2, 4, 17, _), Distance).
-getCost(section(st1, st2, 4, 17, _), Cost).
+station(2, "Station B", "m", 3, Station2), station(1, "Station A", "r", 5, Station1), station(2, "Station B", "m", 3, Station2), section(Station1, Station2, 25, 40, S1).
+station(2, "elias", "t", 3, ST2).
+station(3, "miaaaau", "c", 3, ST3).
+station(2, "elias", "t", 3, ST2), station(3, "miaaaau", "c", 3, ST3), section(ST2, ST3, 3, 12, S1), getPoint1(S1, P1), getPoint2(S1, P2), getDistance(S1, DIST), getCost(S1, COST).
 */

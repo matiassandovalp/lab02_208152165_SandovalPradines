@@ -8,6 +8,7 @@ line(ID, NAME, RAIL_TYPE, SECTIONS, [ID, NAME, RAIL_TYPE, SECTIONS]):-
 	string(RAIL_TYPE),
 	is_list(SECTIONS).
 
+
 isLine(LINE):-
 	is_list(LINE),
 	getID(LINE, ID),
@@ -42,11 +43,13 @@ lineLength(LINE, LENGTH, DISTANCE, COST):-
 	dist(Sections, DISTANCE),
 	cost(Sections, COST).
 
+
 len([], 0).
 
-len([CAR | CDR], ACUM):-
+len([_ | CDR], ACUM):-
 	len(CDR, ACUM1),
 	ACUM is ACUM1 + 2.
+
 
 dist([], 0).
 
@@ -55,6 +58,7 @@ dist([CAR | CDR], ACUM):-
 	getDistance(CAR, ActualDistance),
 	ACUM is ACUM1 + ActualDistance.
 
+
 cost([], 0).
 
 cost([CAR | CDR], ACUM):-
@@ -62,30 +66,31 @@ cost([CAR | CDR], ACUM):-
 	getCost(CAR, ActualCost),
 	ACUM is ACUM1 + ActualCost.
 
+
+%Llamar a Length desde EST1 Hasta EST2 (Crear predicado que excluya resto de ambas partes).
 /*lineSectionLength: TRAYECTO ENTRE 2 ESTACIONES, DISTANCIA Y COSTO 
 lineSectionLength(LINE, StationName1, StationName2, PATH, DISTANCE, COST):-
 */
 
+
 lineAddSection(LINE, SECTION, LINEOUT):-
-	section(ID, NAME, RAIL, SECTIONS, LINE),
-	not(member(SECTION, SECTIONS)),
-	append(SECTION, SECTIONS, NEWSECTIONS),
-	section(ID, NAME, RAIL, NEWSECTIONS, LINEOUT).
-%Verificar id con member y selectores?, llamar a otra funcion que verifique y retorne true si no hay equidades de id?
+	getID(LINE, ID),
+	getName(LINE, NAME),
+	getRailType(LINE, RAIL_TYPE),
+	getSections(LINE, SECTIONS),
+	\+ member(SECTION, SECTIONS),
+	append(SECTIONS, [SECTION], NEWSECTIONS),
+	line(ID, NAME, RAIL_TYPE, NEWSECTIONS, LINEOUT).
 
 
 member(ELEM, [ELEM|_]):-!.
 
-member(ELEM, [CAR|CDR]):-
+member(ELEM, [_|CDR]):-
 	member(ELEM, CDR).
 
-idCheck([], Section):-
-	true.
 
-idCheck([CAR|CDR], SECTION):-
-	true.
-
- section(st1, st2, 4, 17, section1),
- section(st2, st3, 3, 12, section2).
- 
- 
+/*
+station(2, "Station B", "m", 3, Station2), station(1, "Station A", "r", 5, Station1), station(2, "Station B", "m", 3, Station2), section(Station1, Station2, 25, 40, S1), section(Station2, Station1, 75, 60, S2).
+Crear linea y length
+station(2, "Station B", "m", 3, Station2), station(1, "Station A", "r", 5, Station1), station(2, "Station B", "m", 3, Station2), section(Station1, Station2, 25, 40, S1), section(Station2, Station1, 75, 60, S2), line(14, "HII", "Monopatin", [S1, S2], L1), lineLength(L1, LEN, DIS, COS).
+*/
