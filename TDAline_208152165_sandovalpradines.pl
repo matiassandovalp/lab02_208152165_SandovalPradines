@@ -71,7 +71,81 @@ cost([CAR | CDR], ACUM):-
 /*lineSectionLength: TRAYECTO ENTRE 2 ESTACIONES, DISTANCIA Y COSTO 
 lineSectionLength(LINE, StationName1, StationName2, PATH, DISTANCE, COST):-
 */
+  
+continuity(SECT1, SECT2):-
+	getPoint2(SECT1, FIRST),
+	getPoint1(SECT2, SECOND),
+	getStationName(FIRST, FIRSTNAME),
+	getStationName(SECOND, SECONDNAME),
+	FIRSTNAME = SECONDNAME.
+	
+consistency(LINE):-
+	isTerminal(LINE),
+	getSections(LINE, SECTIONLIST),
+	pathT(SECTIONLIST).
 
+consistency(LINE):-
+	isCircular(LINE),
+	getSections(LINE, SECTIONLIST),
+	pathC(SECTIONLIST).
+
+%Cuando una linea empieza y termina en estación terminal.
+isTerminal(LINE):-
+	getSections(LINE, SECTIONS),
+	SECTIONS = [],
+	true.
+
+isTerminal(LINE):-
+	getSections(LINE, SECTIONS),
+	SECTIONS \= []
+	first(SECTIONS, FIRSTSECTION),
+	last(SECTIONS, LASTSECTION),
+	getPoint1(FIRSTSECTION, FIRSTSTATION),
+	getPoint2(LASTSECTION, LASTSTATION),
+	station(_, _, "t", _, FIRSTSTATION),
+	station(_, _, "t", _, LASTSTATION).
+
+%Cuando una linea empieza y termina en la misma sección.
+isCircular(LINE):-
+	getSections(LINE, SECTIONS),
+	SECTIONS = [],
+	true.
+
+isCircular(LINE):-
+	getSections(LINE, SECTIONS),
+	SECTIONS \= []
+	first(SECTIONS, FIRSTSECTION),
+	last(SECTIONS, LASTSECTION),
+	getPoint1(FIRSTSECTION, FIRSTSTATION),
+	getPoint2(LASTSECTION, LASTSTATION),
+	FIRSTSTATION = LASTSTATION.
+
+% Primer elemento de una lista (AUX)
+first([H|_], H).
+
+% Ultimo elemento de una lista (AUX)
+last([X], X).
+last([_|T], X) :-
+	last(T, X).
+
+pathT([FIRSTSECTION|SECTIONS]):-
+	pathT(SECTIONS, FIRSTSECTION, _).
+
+pathT([], GOALSECTION, GOALSECTION).
+
+pathT([NEXTSECTION|SECTIONS], ACTUALSECTION, GOALSECTION):-
+	continuity(ACTUALSECTION, NEXTSECTION),
+	pathT(SECTIONS, NEXTSECTION, GOALSECTION).
+
+pathC([FIRSTSECTION|SECTIONS]):-
+	append(SECTIONS, [FIRSTSECTION], FULLCIRCLE),
+	pathC(FULLCIRCLE, FIRSTSECTION).
+
+pathC([], STARTSECTION, STARTSECTION).
+
+pathC([NEXTSECTION|SECTIONS], ACTUALSECTION, STARTSECTION):-
+	continuity(ACTUALSECTION, NEXTSECTION),
+	pathC(SECTIONS, NEXTSECTION, STARTSECTION).
 
 lineAddSection(LINE, SECTION, LINEOUT):-
 	getID(LINE, ID),
