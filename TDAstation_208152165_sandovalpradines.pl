@@ -1,4 +1,4 @@
-:- module('TDAstation_208152165_sandovalpradines.pl', [station/5]).
+:- module('TDAstation_208152165_sandovalpradines.pl', [station/5, getStationName/2]).
 
 
 stationType("r").
@@ -28,9 +28,12 @@ getStationStopTime(STATION, STOPTIME):-
 
 
 /*
+Crear estaciones:
 station(1, "Station A", "r", 5, Station1).
 station(2, "Station B", "m", 3, Station2).
 station(3, "Station C", "c", 7, Station3).
 station(4, "Station D", "t", 10, Station4).
+
+---------------NO ENTRA EN SCRIPT DE PRUEBAS-------------
 station(4, "Station D", "m", 10, Station4), getStationID(Station4, ID), getStationName(Station4, NAME), getStationType(Station4, TYPE), getStationStopTime(Station4, SST).
 */
