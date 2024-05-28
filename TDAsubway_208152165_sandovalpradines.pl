@@ -1,4 +1,4 @@
-:- module('TDAsubway_208152165_sandovalpradines', []).
+:- module('TDAsubway_208152165_sandovalpradines', [subway/3]).
 
 % Dominios
 %ID = Number

@@ -1,4 +1,4 @@
-:- module('TDAline_208152165_sandovalpradines', []).
+:- module('TDAline_208152165_sandovalpradines', [line/5, isLine/1, lineLength/4, lineSectionLength/6, lineAddSection/3]).
 
 :- use_module('TDAsection_208152165_sandovalpradines.pl', [section/5, getPoint1/2, getPoint2/2, getDistance/2, getCost/2]).
 :- use_module('TDAstation_208152165_sandovalpradines.pl', [station/5, getStationName/2]).
@@ -6,20 +6,20 @@
 %Dominios
 %ID =Int
 %NAME = String
-RAIL_TYPE = String
-SECTIONS = Section List
-LINE = Line
-DISTANCE = Int
-COST = Int
-CAR = List
-CDR = List
-ACUM = Int
-Line = Line
-StartStation = String 
-EndStation = String
-Path =SectionList
-Distance = Int
-Cost = Int
+%RAIL_TYPE = String
+%SECTIONS = Section List
+%LINE = Line
+%DISTANCE = Int
+%COST = Int
+%CAR = List
+%CDR = List
+%ACUM = Int
+%Line = Line
+%StartStation = String 
+%EndStation = String
+%Path =SectionList
+%Distance = Int
+%Cost = Int
 
 %Predicado constructor del TDA line
 %Metas principales:line/5

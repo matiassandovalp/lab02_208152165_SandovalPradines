@@ -1,4 +1,4 @@
-:- module('TDAtrain_208152165_sandovalpradines.pl', []).
+:- module('TDAtrain_208152165_sandovalpradines.pl', [train/6, isTrain/1, trainAddCar/4, trainRemoveCar/3, trainCapacity/2]).
 :- use_module('TDApcar_208152165_sandovalpradines.pl', [pcar/5]).
 
 %Dominios: 
