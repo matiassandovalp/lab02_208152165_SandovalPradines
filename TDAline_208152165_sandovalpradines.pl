@@ -3,12 +3,36 @@
 :- use_module('TDAsection_208152165_sandovalpradines.pl', [section/5, getPoint1/2, getPoint2/2, getDistance/2, getCost/2]).
 :- use_module('TDAstation_208152165_sandovalpradines.pl', [station/5, getStationName/2]).
 
+%Dominios
+%ID =Int
+%NAME = String
+RAIL_TYPE = String
+SECTIONS = Section List
+LINE = Line
+DISTANCE = Int
+COST = Int
+CAR = List
+CDR = List
+ACUM = Int
+Line = Line
+StartStation = String 
+EndStation = String
+Path =SectionList
+Distance = Int
+Cost = Int
+
+%Predicado constructor del TDA line
+%Metas principales:line/5
+%Metas secundarias:
 line(ID, NAME, RAIL_TYPE, SECTIONS, [ID, NAME, RAIL_TYPE, SECTIONS]):-
 	integer(ID),
 	string(NAME),
 	string(RAIL_TYPE),
 	is_list(SECTIONS).
 
+%Predicado de pertenencia del TDA line
+%Metas principales:isLine/1
+%Metas secundarias:
 isLine(LINE):-
 	line(ID,NAME,RAIL_TYPE,SECTIONS,LINE),
 	integer(ID),
@@ -18,6 +42,9 @@ isLine(LINE):-
 	consistency(LINE),
 	writeln('La linea ingresada si pertenece al TDA line.').
 
+%Predicado de pertenencia del TDA line que excluye la consistencia para evitar errores en los selectores
+%Metas principales:myIsLine/1
+%Metas secundarias:
 myIsLine(LINE):-
 	line(ID,NAME,RAIL_TYPE,SECTIONS,LINE),
 	integer(ID),
@@ -25,6 +52,9 @@ myIsLine(LINE):-
 	string(RAIL_TYPE),
 	is_list(SECTIONS).
 
+%Predicados selectores del TDA line
+%Metas principales:
+%Metas secundarias:
 getID(LINE, ID):-
 	myIsLine(LINE),
 	line(ID, _, _, _, LINE), !.
@@ -41,6 +71,9 @@ getSections(LINE, SECTIONLIST):-
 	myIsLine(LINE),
 	line(_, _, _, SECTIONLIST, LINE), !.
 
+%Predicado que calcula el largo distancia y costo de una linea
+%Metas principales:lineLength/4
+%Metas secundarias:
 lineLength([], 0, 0, 0).
 
 lineLength(LINE, LENGTH, DISTANCE, COST):-
@@ -49,12 +82,18 @@ lineLength(LINE, LENGTH, DISTANCE, COST):-
 	dist(Sections, DISTANCE),
 	cost(Sections, COST).
 
+%Predicado que calcula recursivamente el largo de una linea
+%Metas principales:len/2
+%Metas secundarias:
 len([], 0).
 
 len([_| CDR], ACUM):-
 	len(CDR, ACUM1),
 	ACUM is ACUM1 + 2.
 
+%Predicado que calcula recursivamente la distancia de una linea
+%Metas principales:dist/2
+%Metas secundarias:
 dist([], 0).
 
 dist([CAR | CDR], ACUM):-
@@ -62,6 +101,9 @@ dist([CAR | CDR], ACUM):-
 	getDistance(CAR, ActualDistance),
 	ACUM is ACUM1 + ActualDistance.
 
+%Predicado que calcula recursivamente el costo de una linea
+%Metas principales:cost/2
+%Metas secundarias:
 cost([], 0).
 
 cost([CAR | CDR], ACUM):-
@@ -69,6 +111,9 @@ cost([CAR | CDR], ACUM):-
 	getCost(CAR, ActualCost),
 	ACUM is ACUM1 + ActualCost.
 
+%Predicado que verifica la consistencia en las estaciones de una linea
+%Metas principales:consistency/1
+%Metas secundarias:
 consistency(LINE):-
 	isTerminal(LINE),
 	getSections(LINE, SECTIONLIST),
@@ -81,15 +126,19 @@ consistency(LINE):-
 	path(SECTIONLIST),
 	writeln('La linea es consistente circularmente.'), !.
 
+%Predicado que calcula el camino, distancia y costo de una linea entre dos estaciones
+%Metas principales:lineSectionLength/6
+%Metas secundarias:
 lineSectionLength(Line, StartStation, EndStation, Path, Distance, Cost) :-
     Line = [_, _, _, Sections],
     findStationPath(Sections, StartStation, EndStation, [], Path, Distance, Cost).
 
-% Base case: if Start equals End, path is empty, distance and cost are zero.
+%Predicado que encuentra el camino entre dos estaciones y calcula todo lo especificado anteriormente
+%Metas principales:findStationPath/7
+%Metas secundarias:
 findStationPath(_, Start, End, _, [], 0, 0) :-
     Start == End.
 
-% Recursive case: find the path from Start to End through sections.
 findStationPath([Section | RestSections], Start, End, Visited, [Section | Path], Distance, Cost) :-
     getPoint1(Section, StartStat),
     getStationName(StartStat, Start),
@@ -102,17 +151,22 @@ findStationPath([Section | RestSections], Start, End, Visited, [Section | Path],
     Distance is D1 + D2,
     Cost is C1 + C2.
 
-% General case: skip the current section and continue with the rest.
 findStationPath([_ | RestSections], Start, End, Visited, Path, Distance, Cost) :-
     findStationPath(RestSections, Start, End, Visited, Path, Distance, Cost).
 
-% Dummy definition for path/1 to avoid warnings.
+%Definición auxiliar de path para evitar errores
+%Metas principales:path/1
+%Metas secundarias:-
 path(_).
 
+%Predicado que verifica si una linea no es circular
+%Metas principales:isTerminal/1
+%Metas secundarias:
 isTerminal(LINE):-
 	getSections(LINE, SECTIONS),
 	SECTIONS = [],
 	true.
+
 
 isTerminal(LINE):-
 	getSections(LINE, SECTIONS),
@@ -124,6 +178,9 @@ isTerminal(LINE):-
 	station(_, _, "t", _, FIRSTSTATION),
 	station(_, _, "t", _, LASTSTATION).
 
+%Linea que verifica si una linea es circular
+%Metas principales:isCircular(1)
+%Metas secundarias:
 isCircular(LINE):-
 	getSections(LINE, SECTIONS),
 	SECTIONS = [],
@@ -138,12 +195,21 @@ isCircular(LINE):-
 	getPoint2(LASTSECTION, LASTSTATION),
 	FIRSTSTATION = LASTSTATION.
 
+%Predicado que extrae el primer elemento de una lista
+%Metas principales:first/2
+%Metas secundarias:
 first([H|_], H).
 
+%Predicado que extrae el ultimo elemento de una lista
+%Metas principales:last/2
+%Metas secundarias:
 last([X], X).
 last([_|T], X) :-
 	last(T, X).
 
+%Predicado que añade secciones a una linea
+%Metas principales:lineAddSection/3
+%Metas secundarias:
 lineAddSection(LINE, SECTION, LINEOUT):-
 	getID(LINE, ID),
 	getName(LINE, NAME),
@@ -153,12 +219,14 @@ lineAddSection(LINE, SECTION, LINEOUT):-
 	append(SECTIONS, [SECTION], NEWSECTIONS),
 	line(ID, NAME, RAIL_TYPE, NEWSECTIONS, LINEOUT).
 
+%Predicado que verifica si un elemento pertenece a una lista
+%Metas principales:member/2
+%Metas secundarias:
 member(ELEM, [ELEM|_]):-!.
 
 member(ELEM, [_|CDR]):-
 	member(ELEM, CDR).
 
-% Example test cases
 /*
 Crear estaciones y secciones
 station(2, "Station B", "m", 3, Station2), station(1, "Station A", "r", 5, Station1), station(2, "Station B", "m", 3, Station2), section(Station1, Station2, 25, 40, S1), section(Station2, Station1, 75, 60, S2).

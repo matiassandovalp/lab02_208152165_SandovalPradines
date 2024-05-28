@@ -2,23 +2,40 @@
 
 :- use_module('TDAstation_208152165_sandovalpradines.pl', [station/5]).
 
+% Dominios
+% POINT1 = STATION
+% POINT2 = STATION
+% DISTANCE = entero, DISTANCE > 0
+% COST = entero, COST >= 0
+% SECTION = [POINT1, POINT2, DISTANCE, COST]
+
+% Metas principales: section/5
+% Metas secundarias: -
 section(POINT1, POINT2, DISTANCE, COST, [POINT1, POINT2, DISTANCE, COST]):-
-	station(_, _, _, _, POINT1),
-	station(_, _, _, _, POINT2),
-	integer(DISTANCE),
-	DISTANCE > 0,
-	integer(COST),
-	COST >= 0.
+    station(_, _, _, _, POINT1),
+    station(_, _, _, _, POINT2),
+    integer(DISTANCE),
+    DISTANCE > 0,
+    integer(COST),
+    COST >= 0.
 
+% Metas principales: getPoint1/2
+% Metas secundarias: -
 getPoint1(SECTION, FIRST_STATION):-
-	section(FIRST_STATION, _, _, _, SECTION), !.
+    section(FIRST_STATION, _, _, _, SECTION), !.
 
+% Metas principales: getPoint2/2
+% Metas secundarias: -
 getPoint2(SECTION, SECOND_STATION):-
-	section(_, SECOND_STATION, _, _, SECTION), !.
-	
+    section(_, SECOND_STATION, _, _, SECTION), !.
+    
+% Metas principales: getDistance/2
+% Metas secundarias: -
 getDistance(SECTION, DIST):-
     section(_, _, DIST, _, SECTION), !.
 
+% Metas principales: getCost/2
+% Metas secundarias: -
 getCost(SECTION, COST):-
     section(_, _, _, COST, SECTION), !.
 

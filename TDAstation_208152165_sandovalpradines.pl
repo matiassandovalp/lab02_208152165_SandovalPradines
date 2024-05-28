@@ -1,11 +1,24 @@
 :- module('TDAstation_208152165_sandovalpradines.pl', [station/5, getStationName/2]).
 
 
+% Dominios
+% ID = entero
+% NAME = string
+% TYPE = {"r", "m", "c", "t"}
+% STOPTIME = entero
+% STATION = [ID, NAME, TYPE, STOPTIME]
+
+%Hechos que crean restricciones validas para los stationType
+%Metas principales: StationType/1
+%Metas secundarias: station/1
 stationType("r").
 stationType("m").
 stationType("c").
 stationType("t").
 
+%Función constructora para el TDA station
+%Metas principales: station/5
+%Metas secundarias: getStationID/2, getStationName/2, getStationType/2, getStationStopTime/2.
 station(ID, NAME, TYPE, STOPTIME, [ID, NAME, TYPE, STOPTIME]):-
 	integer(ID),
 	string(NAME),
@@ -13,7 +26,9 @@ station(ID, NAME, TYPE, STOPTIME, [ID, NAME, TYPE, STOPTIME]):-
 	integer(STOPTIME),
 	STOPTIME > 0.
 
-
+%Funciones selectoras para el TDA station
+%Metas principales: getStationID/2, getStationName/2, getStationType/2, getStationStopTime/2.
+%Metas secundarias: -
 getStationID(STATION, ID):-
 	station(ID, _, _, _, STATION), !.
 
